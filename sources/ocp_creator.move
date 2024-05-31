@@ -4,6 +4,7 @@ module 0x0::ocp_creator {
     use sui::transfer;
     use std::string::String;
 
+
     /// The `Creator` struct represents a creator in the OCP.
     /// It contains information about the creator, such as their name, URL, description, and avatar.
     public struct Creator has key, store {
@@ -13,6 +14,7 @@ module 0x0::ocp_creator {
         description: String,
         avatar: String,
     }
+
 
     /// Mints a new creator and transfers it to the sender.
     /// 
@@ -38,7 +40,8 @@ module 0x0::ocp_creator {
         };
         transfer::transfer(nft, sender);
     }
-
+    
+    
     /// Updates the URL, description, and avatar of an existing creator.
     /// 
     /// # Arguments
