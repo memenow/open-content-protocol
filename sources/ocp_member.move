@@ -1,13 +1,9 @@
 module 0x0::ocp_member {
-    use sui::tx_context::{Self, TxContext};
-    use sui::object::{Self, UID};
-    use sui::transfer;
     use sui::coin::{Self, Coin};
     use sui::sui::SUI;
     use sui::clock::{Self, Clock};
     use std::string::String;
     use 0x0::ocp_creator::Creator;
-    use std::vector;  
   
     /// The `Member` struct represents a member in the OCP.
     /// It contains information about the member, such as the member's address, URL, description, and avatar.

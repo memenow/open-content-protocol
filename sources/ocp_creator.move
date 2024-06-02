@@ -1,7 +1,4 @@
 module 0x0::ocp_creator {
-    use sui::tx_context;
-    use sui::object;
-    use sui::transfer;
     use std::string::String;
 
     /// The `Creator` struct represents a creator in the OCP.
