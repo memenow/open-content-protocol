@@ -3,7 +3,7 @@ module 0x0::ocp_member {
     use sui::sui::SUI;
     use sui::clock::{Self, Clock};
     use std::string::String;
-    use 0x0::ocp_creator::Creator;
+    use 0x0::ocp_creator::{Creator, get_creator_name};
   
     /// The `Member` struct represents a member in the OCP.
     /// It contains information about the member, such as the member's address, URL, description, and avatar.
@@ -22,7 +22,7 @@ module 0x0::ocp_member {
     public struct Paid has key, store {
         id: UID,
         member: address,
-        creator: ID,
+        creator: address,
         url: String,
         description: String,
     }
@@ -42,7 +42,7 @@ module 0x0::ocp_member {
         url: String,
         description: String,
         avatar: String,
-        clock: &Clock, // Added Clock parameter
+        clock: &Clock,
         ctx: &mut TxContext
     ) {
         let sender = tx_context::sender(ctx);
@@ -129,19 +129,19 @@ module 0x0::ocp_member {
     /// * `description` - The description of the paid membership.
     /// * `ctx` - The transaction context.
     public entry fun mint_paid(
-        creator: &0x0::ocp_creator::Creator,
+        creator: &Creator,
         url: String,
         description: String,
         ctx: &mut TxContext
     ) {
         let sender = tx_context::sender(ctx);
-        let nft = Paid {
+        let paid = Paid {
             id: object::new(ctx),
             member: sender,
-            creator: object::id(creator),
+            creator: get_creator_name(creator),
             url,
             description,
         };
-        transfer::transfer(nft, sender);
-    }
+        transfer::transfer(paid, sender);
+    }    
 }
