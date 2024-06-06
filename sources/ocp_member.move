@@ -3,7 +3,7 @@ module 0x0::ocp_member {
     use sui::sui::SUI;
     use sui::clock::{Self, Clock};
     use std::string::String;
-    use 0x0::ocp_creator::{Creator, get_creator_name};
+    use 0x0::ocp_creator::Creator;
   
     /// The `Member` struct represents a member in the OCP.
     /// It contains information about the member, such as the member's address, URL, description, and avatar.
@@ -15,16 +15,6 @@ module 0x0::ocp_member {
         avatar: String,
         creator: address,
         expires_at: u64,
-    }
-  
-    /// The `Paid` struct represents a paid membership in the OCP.
-    /// It contains information about the paid membership, such as the member's address, creator ID, URL, and description.
-    public struct Paid has key, store {
-        id: UID,
-        member: address,
-        creator: address,
-        url: String,
-        description: String,
     }
   
     /// Mints a new `Member` and transfers it to the sender.
@@ -118,30 +108,5 @@ module 0x0::ocp_member {
     /// * `u64` - The expiration timestamp of the member.
     public fun get_member_expiration(member: &Member): u64 {
         member.expires_at
-    }
-  
-    /// Mints a new `Paid` membership and transfers it to the sender.
-    ///
-    /// # Arguments
-    ///
-    /// * `creator` - A reference to the `Creator` object associated with the paid membership.
-    /// * `url` - The URL of the paid membership.
-    /// * `description` - The description of the paid membership.
-    /// * `ctx` - The transaction context.
-    public entry fun mint_paid(
-        creator: &Creator,
-        url: String,
-        description: String,
-        ctx: &mut TxContext
-    ) {
-        let sender = tx_context::sender(ctx);
-        let paid = Paid {
-            id: object::new(ctx),
-            member: sender,
-            creator: get_creator_name(creator),
-            url,
-            description,
-        };
-        transfer::transfer(paid, sender);
-    }    
+    }  
 }
